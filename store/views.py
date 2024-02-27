@@ -18,7 +18,6 @@ class ShopViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ShopSerializer
     permission_classes = [permissions.ShopAdminPermission]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ('title',)
     search_fields = ('title',)
 
 
@@ -28,8 +27,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     )
     serializer_class = serializers.CategorySerializer
     permission_classes = [permissions.CategoryAdminPermission]
-    filter_backends = (DjangoFilterBackend,)
-    filterset_fields = ("uuid", "title", "parents")
+    search_fields = ("uuid", "title", "parents")
 
     # def list(self, request, *args, **kwargs):
     #     queryset = self.queryset

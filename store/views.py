@@ -4,6 +4,7 @@ from rest_framework import generics
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -44,17 +45,22 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = models.Product.objects.all().prefetch_related(
         "photos", "categories"
-    )
+    ).select_related("shop")
     serializer_class = serializers.ProductSerializer
     permission_classes = [permissions.ProductAdminPermission]
+    parser_classes = (MultiPartParser, FormParser,)
     filter_backends = [DjangoFilterBackend, PriceRangeFilterBackend,
                        filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ('active', )
     search_fields = ('title', 'uuid')
     ordering_fields = ('amount', 'price',)
+    autocomplete_fields = ('shop',)
+
+    # def get_queryset(self):
+    #     return super().get_queryset()[:5]
 
     # def list(self, request, *args, **kwargs):
-    #     queryset = self.queryset
+    #     queryset = super().get_queryset()[:5]
     #     serializer = serializers.ProductListRetrieveSerializer(queryset, many=True)
     #     return Response(serializer.data)
     #
@@ -63,3 +69,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     #     product = get_object_or_404(queryset, uuid=uuid)
     #     serializer = serializers.ProductListRetrieveSerializer(product)
     #     return Response(serializer.data)
+
+    def create(self, request, *args, **kwargs):
+
+        return super().create(request, *args, **kwargs)

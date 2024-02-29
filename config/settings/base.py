@@ -58,6 +58,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # APPS
 # ------------------------------------------------------------------------------
 DJANGO_APPS = [
+
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -65,6 +66,7 @@ DJANGO_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # "django.contrib.humanize", # Handy template tags
+    "jazzmin",
     "django.contrib.admin",
     "django.forms",
 ]
@@ -81,6 +83,7 @@ THIRD_PARTY_APPS = [
     "drf_spectacular",
     "query_counter",
     "django_filters",
+
 ]
 
 LOCAL_APPS = [

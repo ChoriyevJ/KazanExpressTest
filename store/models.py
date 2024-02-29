@@ -13,8 +13,7 @@ class BaseModel(models.Model):
 
 
 class Shop(BaseModel):
-
-    uuid = models.UUIDField(primary_key=True, max_length=8, default=uuid.uuid4)
+    uuid = models.UUIDField(primary_key=True, max_length=8, default=uuid.uuid4, editable=False)
 
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
@@ -26,20 +25,19 @@ class Shop(BaseModel):
 
 
 class Category(BaseModel):
-    uuid = models.UUIDField(primary_key=True, max_length=8, default=uuid.uuid4)
+    uuid = models.UUIDField(primary_key=True, max_length=8, default=uuid.uuid4, editable=False)
 
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
 
-    parents = models.ManyToManyField('self',
-                                     related_name='children', blank=True)
+    parents = models.ManyToManyField('self', blank=True)
 
     def __str__(self):
         return self.title
 
 
 class Product(BaseModel):
-    uuid = models.UUIDField(primary_key=True, max_length=8, default=uuid.uuid4)
+    uuid = models.UUIDField(primary_key=True, max_length=8, default=uuid.uuid4, editable=False)
 
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
@@ -52,7 +50,7 @@ class Product(BaseModel):
     active = models.BooleanField(default=True)
 
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE,
-                             related_name='product')
+                             related_name='products')
     categories = models.ManyToManyField('Category', related_name='products')
 
     def __str__(self):
@@ -80,11 +78,10 @@ class Photo(BaseModel):
 
 
 class Role(BaseModel):
-    title = models.CharField(max_length=31)
+    title = models.CharField(max_length=63)
     user = models.ManyToManyField(get_user_model(), related_name="roles",
                                   blank=True)
     code = models.CharField(max_length=31, blank=True, null=True)
 
     def __str__(self):
         return self.title
-

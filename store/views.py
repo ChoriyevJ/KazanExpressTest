@@ -6,12 +6,14 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import filters
+from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from django_filters.rest_framework import DjangoFilterBackend
 
 from store import models
 from store import serializers
 from store import permissions
 from store.filters import PriceRangeFilterBackend
+from store.throttles import TimeRateThrottle
 
 
 class ShopViewSet(viewsets.ModelViewSet):
@@ -46,11 +48,22 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = models.Product.objects.all().prefetch_related(
         "photos", "categories"
     ).select_related("shop")
+
     serializer_class = serializers.ProductSerializer
-    permission_classes = [permissions.ProductAdminPermission]
-    parser_classes = (MultiPartParser, FormParser,)
+
+    permission_classes = (
+        permissions.ProductAdminPermission,
+    )
+    parser_classes = (
+        MultiPartParser, FormParser,
+    )
     filter_backends = [DjangoFilterBackend, PriceRangeFilterBackend,
                        filters.SearchFilter, filters.OrderingFilter]
+
+    throttle_classes = (AnonRateThrottle,
+                        # UserRateThrottle,
+                        TimeRateThrottle,
+                        )
     filterset_fields = ('active', )
     search_fields = ('title', 'uuid')
     ordering_fields = ('amount', 'price',)
@@ -70,6 +83,3 @@ class ProductViewSet(viewsets.ModelViewSet):
     #     serializer = serializers.ProductListRetrieveSerializer(product)
     #     return Response(serializer.data)
 
-    def create(self, request, *args, **kwargs):
-
-        return super().create(request, *args, **kwargs)

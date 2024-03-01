@@ -83,7 +83,8 @@ THIRD_PARTY_APPS = [
     "drf_spectacular",
     "query_counter",
     "django_filters",
-
+    "django4_recaptcha_admin_login",
+    "captcha",
 ]
 
 LOCAL_APPS = [
@@ -321,7 +322,15 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"]
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '3/day',
+        'user': '3/day'
+    }
 }
 
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup

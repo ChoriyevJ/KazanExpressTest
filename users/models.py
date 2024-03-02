@@ -29,18 +29,10 @@ class User(AbstractUser):
     @property
     def get_user_avatar(self):
 
-        profile = self.profile
-        print('\n\n')
-        print(profile)
-        print('\n\n')
-        image = profile.image.url
-        print('\n\n')
-        print(image)
-        print('\n\n')
+        image = self.profile.image.url
         if image:
             return image
         return None
-
 
 
 class Profile(models.Model):

@@ -194,9 +194,8 @@
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="image">
 
-                            {% if request.user.profile %}
-
-                                <img src="{% get_user_avatar request.user %}" width="160px" class="img-circle elevation-2" alt="User Image">
+                            {% if request.user.get_user_avatar %}
+                                <img src="{{ request.user.get_user_avatar }}" width="160px" class="img-circle elevation-2" alt="User Image">
                             {% comment %}
                                 <img src="{% static 'images/main/profile.jpeg' %}" width="160px" class="img-circle elevation-2" alt="User Image">
                             {% endcomment %}

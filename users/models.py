@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models import CharField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django.db import models
 
 
 class User(AbstractUser):
@@ -25,6 +26,27 @@ class User(AbstractUser):
         """
         return reverse("users:detail", kwargs={"username": self.username})
 
+    @property
+    def get_user_avatar(self):
+
+        profile = self.profile
+        print('\n\n')
+        print(profile)
+        print('\n\n')
+        image = profile.image.url
+        print('\n\n')
+        print(image)
+        print('\n\n')
+        if image:
+            return image
+        return None
+
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE,
+                                related_name="profile")
+    image = models.ImageField(upload_to="images/profile/", blank=True, null=True)
 
 
 

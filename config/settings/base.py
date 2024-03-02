@@ -83,8 +83,8 @@ THIRD_PARTY_APPS = [
     "drf_spectacular",
     "query_counter",
     "django_filters",
-    "django4_recaptcha_admin_login",
-    "captcha",
+    # "django4_recaptcha_admin_login",
+    # "captcha",
 ]
 
 LOCAL_APPS = [
@@ -317,10 +317,11 @@ SOCIALACCOUNT_FORMS = {"signup": "users.forms.UserSocialSignupForm"}
 # django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
+        'rest_framework.authentication.BasicAuthentication',
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ),
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.AllowAny",),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     'DEFAULT_THROTTLE_CLASSES': [
@@ -329,7 +330,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_THROTTLE_RATES': {
         'anon': '3/day',
-        'user': '3/day'
+        'user': '1000/day'
     }
 }
 

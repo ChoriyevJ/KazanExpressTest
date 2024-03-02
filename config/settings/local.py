@@ -20,7 +20,11 @@ CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
         "LOCATION": "",
-    }
+    },
+    'custom': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': BASE_DIR / 'caches',
+    },
 }
 
 # EMAIL
@@ -77,5 +81,6 @@ DATABASES = {
 
 RECAPTCHA_PUBLIC_KEY = "6Lepb4YpAAAAAHkDjVD1hy6q2FIt26T8movrLCQU"
 RECAPTCHA_PRIVATE_KEY = "6Lepb4YpAAAAAApKgjsQeOcIY1PB6YrltciVLMMt"
+
 
 

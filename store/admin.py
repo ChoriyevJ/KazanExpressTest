@@ -17,7 +17,7 @@ class ShopAdmin(admin.ModelAdmin):
 
 @admin.register(models.Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('title', )
+    list_display = ('title',)
     search_fields = ('title', 'uuid')
 
 
@@ -30,7 +30,3 @@ class ProductAdmin(admin.ModelAdmin):
     autocomplete_fields = ('shop',)
     search_fields = ('title', 'uuid')
     inlines = (PhotoInline,)
-
-    
-
-

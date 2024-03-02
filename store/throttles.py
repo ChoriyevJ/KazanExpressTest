@@ -100,7 +100,7 @@ class AnonUserRateThrottle(AnonRateThrottle):
 
         if request.user.is_authenticated:
             return True
-        addr = request.META["REMOTE_ADDR"]
+        self.addr = request.META["REMOTE_ADDR"]
 
         hour = datetime.now().hour if datetime.now().hour != 0 else 24
         minute = datetime.now().minute
@@ -109,15 +109,14 @@ class AnonUserRateThrottle(AnonRateThrottle):
         if not request.session.get('main'):
             self.__dict = request.session['main'] = {}
 
-        if not self.__dict.get(f'{addr}'):
-            self.__add_or_retry_dict(addr, hour, minute)
+        if not self.__dict.get(f'{self.addr}'):
+            self.__add_or_retry_dict(self.addr, hour, minute)
 
-        check = self.__check(addr, hour, minute)
+        check = self.__check(self.addr, hour, minute)
         request.session.modified = True
         return check
 
     def wait(self):
-        addr = tuple(self.__dict.keys())[-1]
-        index = self.__dict[addr]["number_blocks"] - 1
+        index = self.__dict[self.addr]["number_blocks"] - 1
         time = self.__block_times[index]
         return time * 60
